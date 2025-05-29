@@ -6,7 +6,7 @@
 /*   By: ssuopea <ssuopea@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:47:33 by ssuopea           #+#    #+#             */
-/*   Updated: 2025/05/29 14:27:31 by ssuopea          ###   ########.fr       */
+/*   Updated: 2025/05/29 15:34:06 by ssuopea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,13 @@ static int	print_string(char *s);
 
 int	ft_printf(const char *str, ...)
 {
-	va_list args;
-	int		i = 0;
-	int		printed_total = 0;
-	int		printed_last = 0;
+	va_list	args;
+	int		i;
+	int		printed_total;
+	int		printed_last;
 
+	i = 0;
+	printed_total = 0;
 	va_start(args, str);
 	while (str[i])
 	{
@@ -53,13 +55,13 @@ static int	select_substitution(const char flag, va_list *args)
 	if (flag == 'u')
 		return (print_base(va_arg(*args, unsigned), "0123456789"));
 	if (flag == 'x')
-		return (print_base((long long int) va_arg(*args, unsigned), "0123456789abcdef"));
+		return (print_base(va_arg(*args, unsigned), "0123456789abcdef"));
 	if (flag == 'X')
-		return (print_base((long long int) va_arg(*args, unsigned), "0123456789ABCDEF"));
+		return (print_base(va_arg(*args, unsigned), "0123456789ABCDEF"));
 	if (flag == 'p')
 	{
 		write(1, &"0x", 2);
-		return (print_base((long long int) va_arg(*args, void *), "0123456789abcdef"));
+		return (print_base(va_arg(*args, void *), "0123456789abcdef"));
 	}
 	if (flag == '%')
 		return (write(1, &"%", 1));
@@ -68,7 +70,7 @@ static int	select_substitution(const char flag, va_list *args)
 
 static int	print_char(char c)
 {
-	return(write(1, &c, 1));
+	return (write(1, &c, 1));
 }
 
 static int	print_string(char *s)
