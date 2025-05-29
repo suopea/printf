@@ -6,7 +6,7 @@
 /*   By: ssuopea <ssuopea@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 12:47:33 by ssuopea           #+#    #+#             */
-/*   Updated: 2025/05/29 15:34:06 by ssuopea          ###   ########.fr       */
+/*   Updated: 2025/05/29 15:57:19 by ssuopea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static int	select_substitution(const char flag, va_list *args);
 static int	print_char(char c);
 static int	print_string(char *s);
+static int	print_pointer(void *ptr);
 
 int	ft_printf(const char *str, ...)
 {
@@ -23,10 +24,12 @@ int	ft_printf(const char *str, ...)
 	int		printed_total;
 	int		printed_last;
 
-	i = 0;
+	i = -1;
 	printed_total = 0;
 	va_start(args, str);
-	while (str[i])
+	if (!str)
+		return (-1);
+	while (str[++i])
 	{
 		if (str[i] != '%')
 			printed_last = write(1, str + i, 1);
@@ -38,7 +41,6 @@ int	ft_printf(const char *str, ...)
 		if (printed_last == -1)
 			return (-1);
 		printed_total += printed_last;
-		i++;
 	}
 	va_end(args);
 	return (printed_total);
@@ -47,9 +49,9 @@ int	ft_printf(const char *str, ...)
 static int	select_substitution(const char flag, va_list *args)
 {
 	if (flag == 'c')
-		return (print_char(va_arg(*args, int)));
+		return (print_char((char) va_arg(*args, int)));
 	if (flag == 's')
-		return (print_string((char *)va_arg(*args, int *)));
+		return (print_string((char *) va_arg(*args, int *)));
 	if (flag == 'd' || flag == 'i')
 		return (print_base(va_arg(*args, int), "0123456789"));
 	if (flag == 'u')
@@ -59,13 +61,19 @@ static int	select_substitution(const char flag, va_list *args)
 	if (flag == 'X')
 		return (print_base(va_arg(*args, unsigned), "0123456789ABCDEF"));
 	if (flag == 'p')
-	{
-		write(1, &"0x", 2);
-		return (print_base(va_arg(*args, void *), "0123456789abcdef"));
-	}
+		return (print_pointer(va_arg(*args, void *)));
 	if (flag == '%')
-		return (write(1, &"%", 1));
+		return (write(1, "%", 1));
 	return (-1);
+}
+
+static int	print_pointer(void *ptr)
+{
+	if (!ptr)
+		return (write(1, "(nil)", 5));
+	if (write(1, "0x", 2) == -1)
+		return (-1);
+	return (2 + print_base((long long int) ptr, "0123456789abcdef"));
 }
 
 static int	print_char(char c)
@@ -79,6 +87,8 @@ static int	print_string(char *s)
 	int		total_count;
 	size_t	i;
 
+	if (!s)
+		return (write(1, "(null)", 6));
 	i = 0;
 	total_count = 0;
 	while (s[i])
