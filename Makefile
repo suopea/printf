@@ -1,12 +1,17 @@
 NAME = libftprintf.a
 SRC = ft_printf.c print_base.c
+LIBFT = libft/libft.a
 OBJ = $(SRC:.c=.o)
 FLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) $(LIBFT)
 	ar rcs $@ $^	
+
+$(LIBFT):
+	make -C libft
+	make -C libft clean
 
 %.o: %.c
 	cc $(FLAGS) -c $<

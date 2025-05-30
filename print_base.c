@@ -12,14 +12,6 @@
 
 #include "ft_printf.h"
 
-int	ft_strlen(char *str)
-{
-	int i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
 int	write_reverse(char *buffer, int len)
 {
 	char	out[24];

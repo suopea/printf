@@ -83,21 +83,7 @@ static int	print_char(char c)
 
 static int	print_string(char *s)
 {
-	int		last_count;
-	int		total_count;
-	size_t	i;
-
 	if (!s)
 		return (write(1, "(null)", 6));
-	i = 0;
-	total_count = 0;
-	while (s[i])
-	{
-		last_count = write(1, s + i, 1);
-		if (last_count < 0)
-			return (-1);
-		total_count += last_count;
-		i++;
-	}
-	return (total_count);
+	return (write(1, s, ft_strlen(s)));
 }
