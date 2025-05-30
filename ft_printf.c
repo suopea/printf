@@ -15,7 +15,6 @@
 static int	select_substitution(const char flag, va_list *args);
 static int	print_char(char c);
 static int	print_string(char *s);
-static int	print_pointer(void *ptr);
 
 int	ft_printf(const char *str, ...)
 {
@@ -61,19 +60,10 @@ static int	select_substitution(const char flag, va_list *args)
 	if (flag == 'X')
 		return (print_base(va_arg(*args, unsigned), "0123456789ABCDEF"));
 	if (flag == 'p')
-		return (print_pointer(va_arg(*args, void *)));
+		return (print_pointer((unsigned long long) va_arg(*args, void *)));
 	if (flag == '%')
 		return (write(1, "%", 1));
 	return (-1);
-}
-
-static int	print_pointer(void *ptr)
-{
-	if (!ptr)
-		return (write(1, "(nil)", 5));
-	if (write(1, "0x", 2) == -1)
-		return (-1);
-	return (2 + print_base((long long int) ptr, "0123456789abcdef"));
 }
 
 static int	print_char(char c)

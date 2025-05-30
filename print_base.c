@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-int	write_reverse(char *buffer, int len)
+static int	write_reverse(char *buffer, int len)
 {
 	char	out[24];
 	int		index_out;
@@ -26,27 +26,43 @@ int	write_reverse(char *buffer, int len)
 	return (write(1, out, len));
 }
 
-int	print_base(long nbr, char *base)
+int	print_pointer(unsigned long long pointer)
 {
-	char	buffer[24];
-	int		i;
-	int		positive;
-	long	temp;
+	char				buffer[32];
+	int					i;
+
+	if (!pointer)
+		return (write(1, "(nil)", 5));
+	if (write(1, "0x", 2) == -1)
+		return (-1);
+	i = 0;
+	while (pointer > 0)
+	{
+		buffer[i++] = "0123456789abcdef"[pointer % 16];
+		pointer /= 16;
+	}
+	return (2 + write_reverse(buffer, i--));
+}
+
+int	print_base(long long nbr, char *base)
+{
+	char		buffer[32];
+	int			i;
+	int			positive;
 
 	if (nbr == 0)
 		return (write(1, "0", 1));
 	i = 0;
 	positive = 1;
-	temp = nbr;
-	if (temp < 0)
+	if (nbr < 0)
 	{
 		positive = 0;
-		temp = -temp;
+		nbr = -nbr;
 	}
-	while (temp > 0)
+	while (nbr > 0)
 	{
-		buffer[i++] = base[temp % ft_strlen(base)];
-		temp /= ft_strlen(base);
+		buffer[i++] = base[nbr % ft_strlen(base)];
+		nbr /= ft_strlen(base);
 	}
 	if (!positive)
 		buffer[i++] = '-';
