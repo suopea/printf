@@ -17,5 +17,6 @@
 # include "libft/libft.h"
 
 int	print_base(int i, char *base);
+int	ft_printf(const char *str, ...);
 
 #endif

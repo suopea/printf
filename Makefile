@@ -7,7 +7,8 @@ FLAGS = -Wall -Wextra -Werror
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT)
-	ar rcs $@ $^	
+	cp $(LIBFT) $(NAME)
+	ar rcs $@ $(OBJ)
 
 $(LIBFT):
 	make -C libft
