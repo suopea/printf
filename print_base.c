@@ -26,7 +26,7 @@ int	write_reverse(char *buffer, int len)
 	return (write(1, out, len));
 }
 
-int	print_base(int nbr, char *base)
+int	print_base(long nbr, char *base)
 {
 	char	buffer[24];
 	int		i;

@@ -16,7 +16,7 @@
 # include <unistd.h>
 # include "libft/libft.h"
 
-int	print_base(int i, char *base);
+int	print_base(long i, char *base);
 int	ft_printf(const char *str, ...);
 
 #endif
