@@ -33,15 +33,15 @@ int	print_pointer(unsigned long long pointer)
 
 	if (!pointer)
 		return (write(1, "(nil)", 5));
-	if (write(1, "0x", 2) == -1)
-		return (-1);
 	i = 0;
 	while (pointer > 0)
 	{
 		buffer[i++] = "0123456789abcdef"[pointer % 16];
 		pointer /= 16;
 	}
-	return (2 + write_reverse(buffer, i--));
+	buffer[i++] = 'x';
+	buffer[i++] = '0';
+	return (write_reverse(buffer, i--));
 }
 
 int	print_base(long long nbr, char *base)
